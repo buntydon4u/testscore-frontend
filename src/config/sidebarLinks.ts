@@ -1,0 +1,97 @@
+import { LucideIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  FileText,
+  BookOpen,
+  Award,
+  BarChart3,
+  Settings,
+  Lock,
+  Activity,
+  Shield,
+  User,
+  Package,
+  Calendar,
+  PlayCircle,
+  Target,
+  Square,
+  Clock,
+  CreditCard,
+  GraduationCap,
+  TrendingUp,
+  AlertCircle,
+} from "lucide-react";
+
+export interface SidebarLink {
+  path: string;
+  icon: LucideIcon;
+  label: string;
+}
+
+export const sidebarLinks = {
+  SUPER_ADMIN: [
+    { path: "/super-admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/super-admin/users", icon: Users, label: "Manage Users" },
+    { path: "/super-admin/system-config", icon: Settings, label: "System Configuration" },
+    { path: "/super-admin/audit-log", icon: Activity, label: "Audit Log" },
+    { path: "/super-admin/security", icon: Shield, label: "Security Alerts" },
+    { path: "/super-admin/analytics", icon: BarChart3, label: "System Reports" },
+    { path: "/super-admin/change-password", icon: Lock, label: "Change Password" },
+  ] as SidebarLink[],
+  ADMIN: [
+    { path: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/admin/students", icon: Users, label: "Manage Students" },
+    { path: "/admin/exams", icon: FileText, label: "Manage Exams" },
+    { path: "/admin/courses", icon: BookOpen, label: "Manage Courses" },
+    { path: "/admin/results", icon: Award, label: "View Results" },
+    { path: "/admin/analytics", icon: BarChart3, label: "Analytics" },
+    { path: "/admin/system-config", icon: Settings, label: "System Configuration" },
+    { path: "/admin/settings", icon: Settings, label: "Settings" },
+    { path: "/admin/change-password", icon: Lock, label: "Change Password" },
+  ] as SidebarLink[],
+  TEACHER: [
+    { path: "/teacher/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/teacher/profile", icon: User, label: "Profile" },
+    { path: "/teacher/students", icon: Users, label: "Students" },
+    { path: "/teacher/students/view", icon: GraduationCap, label: "Manage Students" },
+    { path: "/teacher/exams", icon: FileText, label: "Exams" },
+    { path: "/teacher/exams/view", icon: FileText, label: "Manage Exams" },
+    { path: "/teacher/courses", icon: BookOpen, label: "Courses" },
+    { path: "/teacher/sections/view", icon: BookOpen, label: "Manage Sections" },
+    { path: "/teacher/results", icon: Award, label: "Results" },
+    { path: "/teacher/attendance", icon: Calendar, label: "Attendance" },
+    { path: "/teacher/schedule", icon: Calendar, label: "Schedule" },
+    { path: "/teacher/scheduled-tests", icon: Calendar, label: "Scheduled Tests" },
+    { path: "/teacher/exam-results", icon: Award, label: "Exam Results" },
+    { path: "/teacher/transactions", icon: CreditCard, label: "Transactions" },
+    { path: "/teacher/analytics", icon: BarChart3, label: "Analytics" },
+    { path: "/teacher/change-password", icon: Lock, label: "Change Password" },
+  ] as SidebarLink[],
+  STUDENT: [
+    { path: "/student/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/student/profile", icon: User, label: "Profile" },
+    { path: "/student/purchased-packages", icon: Package, label: "Purchased Packages" },
+    { path: "/student/scheduled-exams", icon: Calendar, label: "Scheduled Exams" },
+    { path: "/student/complete-exam", icon: PlayCircle, label: "Complete Exam" },
+    { path: "/student/topic-test", icon: Target, label: "Topic Test" },
+    { path: "/student/section-test", icon: Square, label: "Section Test" },
+    { path: "/student/test-in-progress", icon: Clock, label: "Test In-Progress" },
+    { path: "/student/exam-result", icon: Award, label: "Exam Result" },
+    { path: "/student/transactions", icon: CreditCard, label: "Transactions" },
+    { path: "/student/change-password", icon: Lock, label: "Change Password" },
+  ] as SidebarLink[],
+  PARENT: [
+    { path: "/parent/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/parent/children", icon: Users, label: "View Children" },
+    { path: "/parent/progress", icon: TrendingUp, label: "Children Progress" },
+    { path: "/parent/reports", icon: BarChart3, label: "Performance Reports" },
+    { path: "/parent/notifications", icon: AlertCircle, label: "Notifications" },
+    { path: "/parent/change-password", icon: Lock, label: "Change Password" },
+  ] as SidebarLink[],
+  INSTITUTE_OWNER: [] as SidebarLink[],
+  SHARED: [] as SidebarLink[],
+};
+
+export const adminLinks = sidebarLinks.ADMIN;
+export const superAdminLinks = sidebarLinks.SUPER_ADMIN;

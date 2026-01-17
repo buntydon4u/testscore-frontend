@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "studentName": "John Doe",
+    "examName": "Mathematics Final",
+    "score": 85,
+    "date": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "studentName": "Jane Smith",
+    "examName": "Physics Midterm",
+    "score": 78,
+    "date": "2024-02-01"
+  },
+  {
+    "id": 3,
+    "studentName": "Bob Johnson",
+    "examName": "Chemistry Quiz",
+    "score": 92,
+    "date": "2024-02-15"
+  },
+  {
+    "id": 4,
+    "studentName": "Alice Brown",
+    "examName": "Biology Test",
+    "score": 65,
+    "date": "2024-03-01"
+  }
+]

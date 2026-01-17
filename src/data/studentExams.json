@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "examName": "Mathematics Final",
+    "subject": "Mathematics",
+    "date": "2024-01-20",
+    "time": "10:00 AM",
+    "status": "Scheduled"
+  },
+  {
+    "id": 2,
+    "examName": "Physics Lab Test",
+    "subject": "Physics",
+    "date": "2024-01-25",
+    "time": "2:00 PM",
+    "status": "Scheduled"
+  },
+  {
+    "id": 3,
+    "examName": "Chemistry Practical",
+    "subject": "Chemistry",
+    "date": "2024-02-01",
+    "time": "11:00 AM",
+    "status": "Completed"
+  },
+  {
+    "id": 4,
+    "examName": "Biology Theory",
+    "subject": "Biology",
+    "date": "2024-02-05",
+    "time": "9:00 AM",
+    "status": "Scheduled"
+  }
+]

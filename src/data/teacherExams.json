@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "examName": "Mathematics Final",
+    "subject": "Mathematics",
+    "createdDate": "2024-01-10",
+    "status": "Active"
+  },
+  {
+    "id": 2,
+    "examName": "Physics Midterm",
+    "subject": "Physics",
+    "createdDate": "2024-02-01",
+    "status": "Draft"
+  },
+  {
+    "id": 3,
+    "examName": "Chemistry Quiz",
+    "subject": "Chemistry",
+    "createdDate": "2024-01-25",
+    "status": "Active"
+  },
+  {
+    "id": 4,
+    "examName": "Biology Test",
+    "subject": "Biology",
+    "createdDate": "2024-03-01",
+    "status": "Active"
+  }
+]
