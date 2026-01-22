@@ -1,6 +1,11 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
+// Use the proxy in development, or direct URL in production
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+
+console.log('API_BASE_URL:', API_BASE_URL);
+console.log('VITE_API_URL from env:', import.meta.env.VITE_API_URL);
+console.log('Mode:', import.meta.env.MODE);
 
 interface ApiResponse<T> {
   message: string;
@@ -21,13 +26,13 @@ class ApiClient {
       return responseData as T;
     }
 
-    const hasMessage = Object.prototype.hasOwnProperty.call(responseData, 'message');
     const hasData = Object.prototype.hasOwnProperty.call(responseData, 'data');
     const keys = Object.keys(responseData);
 
-    // Only unwrap when backend returns a simple envelope: { message, data }
-    // If there are extra keys (e.g. total/page/limit), keep the full object.
-    if (hasMessage && hasData && keys.length === 2) {
+    // Check if response has a 'data' property and looks like a wrapped response
+    // Common patterns: { success: true, data: [...] }, { message: "...", data: [...] }
+    if (hasData && (responseData.success !== undefined || responseData.message !== undefined)) {
+      console.log('Unwrapping response data:', responseData);
       return responseData.data as T;
     }
 
@@ -79,8 +84,12 @@ class ApiClient {
   }
 
   async get<T>(endpoint: string, params?: Record<string, unknown>): Promise<T> {
+    console.log('API GET request:', endpoint, params);
     const response = await this.axiosInstance.get(endpoint, { params });
-    return this.unwrapResponseData<T>(response.data);
+    console.log('API GET response:', response.data);
+    const unwrapped = this.unwrapResponseData<T>(response.data);
+    console.log('API GET unwrapped:', unwrapped);
+    return unwrapped;
   }
 
   async post<T>(endpoint: string, data?: Record<string, unknown>): Promise<T> {

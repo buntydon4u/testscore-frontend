@@ -21,6 +21,9 @@ import {
   GraduationCap,
   TrendingUp,
   AlertCircle,
+  ShoppingCart,
+  DollarSign,
+  Box,
 } from "lucide-react";
 
 export interface SidebarLink {
@@ -32,6 +35,8 @@ export interface SidebarLink {
 export const sidebarLinks = {
   SUPER_ADMIN: [
     { path: "/super-admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/super-admin/packages", icon: Box, label: "Package Management" },
+    { path: "/super-admin/orders", icon: ShoppingCart, label: "Order Management" },
     { path: "/super-admin/users", icon: Users, label: "Manage Users" },
     { path: "/super-admin/system-config", icon: Settings, label: "System Configuration" },
     { path: "/super-admin/audit-log", icon: Activity, label: "Audit Log" },
@@ -41,6 +46,8 @@ export const sidebarLinks = {
   ] as SidebarLink[],
   ADMIN: [
     { path: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/admin/packages", icon: Box, label: "Package Management" },
+    { path: "/admin/orders", icon: ShoppingCart, label: "Order Management" },
     { path: "/admin/students", icon: Users, label: "Manage Students" },
     { path: "/admin/exams", icon: FileText, label: "Manage Exams" },
     { path: "/admin/courses", icon: BookOpen, label: "Manage Courses" },
@@ -70,6 +77,7 @@ export const sidebarLinks = {
   ] as SidebarLink[],
   STUDENT: [
     { path: "/student/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/student/packages", icon: Package, label: "My Packages" },
     { path: "/student/profile", icon: User, label: "Profile" },
     { path: "/student/purchased-packages", icon: Package, label: "Purchased Packages" },
     { path: "/student/scheduled-exams", icon: Calendar, label: "Scheduled Exams" },

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { adminLinks, superAdminLinks, SidebarLink } from "@/config/sidebarLinks";
-import { ChevronLeft, ChevronRight, GraduationCap, LogOut, Users, FileText, BookOpen, Award, Calendar, BarChart3 } from "lucide-react";
+import { ChevronLeft, ChevronRight, GraduationCap, LogOut, Users, FileText, BookOpen, Award, Calendar, BarChart3, Box, ShoppingCart } from "lucide-react";
 import { authService } from '../services/auth';
 
 export const SuperAdminSidebar = () => {
@@ -17,6 +17,8 @@ export const SuperAdminSidebar = () => {
   // Custom menu order for super admin
   const menuItems: SidebarLink[] = [
     superAdminLinks.find(link => link.path === "/super-admin/dashboard")!,
+    superAdminLinks.find(link => link.path === "/super-admin/packages")!,
+    superAdminLinks.find(link => link.path === "/super-admin/orders")!,
     superAdminLinks.find(link => link.path === "/super-admin/users")!,
     { path: "/super-admin/students", icon: Users, label: "Students" },
     { path: "/super-admin/exams", icon: FileText, label: "Exams" },

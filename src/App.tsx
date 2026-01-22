@@ -45,6 +45,10 @@ import { Dashboard as AdminDashboard } from "./admin/Dashboard";
 import { ChangePassword as AdminChangePassword } from "./admin/ChangePassword";
 import { SystemConfig as AdminSystemConfig } from "./admin/SystemConfig";
 import { Exams as AdminExams } from "./admin/Exams";
+import { PackageManagement } from "./pages/PackageManagement";
+import { OrderManagement } from "./pages/OrderManagement";
+import { AdminDashboard as AdminStatsDashboard } from "./pages/AdminDashboard";
+import { StudentPackages } from "./pages/StudentPackages";
 import { Dashboard as ParentDashboard } from "./parent/Dashboard";
 import ParentChildren from "./parent/Children";
 import ParentProgress from "./parent/Progress";
@@ -59,7 +63,7 @@ import { authService } from "./services/auth";
 
 const AdminRoutes = () => (
   <Routes>
-    <Route path="dashboard" element={<AdminDashboard />} />
+    <Route path="dashboard" element={<AdminStatsDashboard />} />
     <Route path="analytics" element={<Analytics />} />
     <Route path="students" element={<AdminStudents />} />
     <Route path="exams" element={<AdminExams />} />
@@ -70,12 +74,14 @@ const AdminRoutes = () => (
     <Route path="system-config" element={<AdminSystemConfig />} />
     <Route path="settings" element={<Settings />} />
     <Route path="change-password" element={<AdminChangePassword />} />
+    <Route path="packages" element={<PackageManagement />} />
+    <Route path="orders" element={<OrderManagement />} />
   </Routes>
 );
 
 const SuperAdminRoutes = () => (
   <Routes>
-    <Route path="dashboard" element={<SuperAdminDashboard />} />
+    <Route path="dashboard" element={<AdminStatsDashboard />} />
     <Route path="users" element={<SuperAdminUsers />} />
     <Route path="students" element={<AdminStudents />} />
     <Route path="exams" element={<AdminExams />} />
@@ -89,6 +95,8 @@ const SuperAdminRoutes = () => (
     <Route path="audit-log" element={<SuperAdminAuditLog />} />
     <Route path="security" element={<SuperAdminSecurity />} />
     <Route path="change-password" element={<SuperAdminChangePassword />} />
+    <Route path="packages" element={<PackageManagement />} />
+    <Route path="orders" element={<OrderManagement />} />
   </Routes>
 );
 
@@ -101,7 +109,8 @@ const StudentRoutes = () => (
     <Route path="complete-exam" element={<StudentFreeCompleteExam />} />
     <Route path="section-test" element={<StudentFreeSectionTest />} />
     <Route path="topic-test" element={<StudentFreeTopicTest />} />
-    <Route path="purchased-packages" element={<StudentPurchasedPackages />} />
+    <Route path="packages" element={<StudentPackages />} />
+    <Route path="purchased-packages" element={<StudentPackages />} />
     <Route path="scheduled-exams" element={<StudentScheduledExams />} />
     <Route path="test-in-progress" element={<StudentTestInProgress />} />
     <Route path="transactions" element={<StudentTransactions />} />
