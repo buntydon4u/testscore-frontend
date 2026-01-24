@@ -27,7 +27,6 @@ class ApiClient {
     }
 
     const hasData = Object.prototype.hasOwnProperty.call(responseData, 'data');
-    const keys = Object.keys(responseData);
 
     // Check if response has a 'data' property and looks like a wrapped response
     // Common patterns: { success: true, data: [...] }, { message: "...", data: [...] }
@@ -83,13 +82,19 @@ class ApiClient {
     return ApiClient.instance;
   }
 
-  async get<T>(endpoint: string, params?: Record<string, unknown>): Promise<T> {
-    console.log('API GET request:', endpoint, params);
-    const response = await this.axiosInstance.get(endpoint, { params });
-    console.log('API GET response:', response.data);
-    const unwrapped = this.unwrapResponseData<T>(response.data);
-    console.log('API GET unwrapped:', unwrapped);
-    return unwrapped;
+  async get<T>(endpoint: string): Promise<T> {
+    try {
+      console.log(`Making GET request to: ${endpoint}`);
+      const response = await this.axiosInstance.get(endpoint);
+      console.log('Raw response:', response);
+      console.log('Response data:', response.data);
+      const unwrapped = this.unwrapResponseData<T>(response.data);
+      console.log('Unwrapped data:', unwrapped);
+      return unwrapped;
+    } catch (error: any) {
+      console.error('API GET Error:', error);
+      throw error;
+    }
   }
 
   async post<T>(endpoint: string, data?: Record<string, unknown>): Promise<T> {

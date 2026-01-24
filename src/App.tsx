@@ -47,6 +47,8 @@ import { SystemConfig as AdminSystemConfig } from "./admin/SystemConfig";
 import { Exams as AdminExams } from "./admin/Exams";
 import { PackageManagement } from "./pages/PackageManagement";
 import { OrderManagement } from "./pages/OrderManagement";
+import { StreamManagement } from "./components/Streams/StreamManagement";
+import { SubjectManagement } from "./components/Subjects/SubjectManagement";
 import { AdminDashboard as AdminStatsDashboard } from "./pages/AdminDashboard";
 import { StudentPackages } from "./pages/StudentPackages";
 import { Dashboard as ParentDashboard } from "./parent/Dashboard";
@@ -75,6 +77,8 @@ const AdminRoutes = () => (
     <Route path="settings" element={<Settings />} />
     <Route path="change-password" element={<AdminChangePassword />} />
     <Route path="packages" element={<PackageManagement />} />
+    <Route path="streams" element={<StreamManagement />} />
+    <Route path="subjects" element={<SubjectManagement />} />
     <Route path="orders" element={<OrderManagement />} />
   </Routes>
 );
@@ -96,6 +100,8 @@ const SuperAdminRoutes = () => (
     <Route path="security" element={<SuperAdminSecurity />} />
     <Route path="change-password" element={<SuperAdminChangePassword />} />
     <Route path="packages" element={<PackageManagement />} />
+    <Route path="streams" element={<StreamManagement />} />
+    <Route path="subjects" element={<SubjectManagement />} />
     <Route path="orders" element={<OrderManagement />} />
   </Routes>
 );

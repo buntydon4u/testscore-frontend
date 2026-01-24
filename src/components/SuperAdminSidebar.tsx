@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { adminLinks, superAdminLinks, SidebarLink } from "@/config/sidebarLinks";
-import { ChevronLeft, ChevronRight, GraduationCap, LogOut, Users, FileText, BookOpen, Award, Calendar, BarChart3, Box, ShoppingCart } from "lucide-react";
+import { superAdminLinks, isSidebarParent } from "@/config/sidebarLinks";
+import { ChevronLeft, ChevronRight, GraduationCap, LogOut, Users, FileText, BookOpen, Award, Calendar, BarChart3, ChevronDown } from "lucide-react";
 import { authService } from '../services/auth';
 
 export const SuperAdminSidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -14,26 +15,20 @@ export const SuperAdminSidebar = () => {
     navigate('/', { replace: true });
   };
 
-  // Custom menu order for super admin
-  const menuItems: SidebarLink[] = [
-    superAdminLinks.find(link => link.path === "/super-admin/dashboard")!,
-    superAdminLinks.find(link => link.path === "/super-admin/packages")!,
-    superAdminLinks.find(link => link.path === "/super-admin/orders")!,
-    superAdminLinks.find(link => link.path === "/super-admin/users")!,
-    { path: "/super-admin/students", icon: Users, label: "Students" },
-    { path: "/super-admin/exams", icon: FileText, label: "Exams" },
-    { path: "/super-admin/courses", icon: BookOpen, label: "Courses" },
-    { path: "/super-admin/results", icon: Award, label: "Results" },
-    { path: "/super-admin/attendance", icon: Calendar, label: "Attendance" },
-    { path: "/super-admin/schedule", icon: Calendar, label: "Schedule" },
-    { path: "/super-admin/analytics", icon: BarChart3, label: "Analytics" },
-    superAdminLinks.find(link => link.path === "/super-admin/system-config")!,
-    superAdminLinks.find(link => link.path === "/super-admin/audit-log")!,
-    superAdminLinks.find(link => link.path === "/super-admin/security")!,
-    superAdminLinks.find(link => link.path === "/super-admin/change-password")!,
-  ].filter(Boolean);
-
   const isActive = (path: string) => location.pathname === path;
+
+  const toggleMenu = (label: string) => {
+    setExpandedMenus(prev => 
+      prev.includes(label) 
+        ? prev.filter(item => item !== label)
+        : [...prev, label]
+    );
+  };
+
+  const isMenuExpanded = (label: string) => {
+    if (isCollapsed) return false;
+    return expandedMenus.includes(label);
+  };
 
   return (
     <div
@@ -65,21 +60,78 @@ export const SuperAdminSidebar = () => {
 
       {/* Menu Items */}
       <nav className="flex-1 overflow-y-auto py-4">
-        {menuItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={`flex items-center gap-3 px-4 py-3 mx-2 rounded-lg transition-colors ${
-              isActive(item.path)
-                ? "bg-emerald-500 text-white"
-                : "text-gray-300 hover:bg-slate-700"
-            }`}
-            title={isCollapsed ? item.label : ""}
-          >
-            <item.icon className="w-5 h-5 flex-shrink-0" />
-            {!isCollapsed && <span className="text-sm">{item.label}</span>}
-          </Link>
-        ))}
+        {superAdminLinks.map((item, index) => {
+          if (isSidebarParent(item)) {
+            // Render parent menu
+            const isExpanded = isMenuExpanded(item.label);
+            const hasActiveChild = item.children.some(child => 
+              location.pathname === child.path
+            );
+
+            return (
+              <div key={index}>
+                <button
+                  onClick={() => toggleMenu(item.label)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 mx-2 rounded-lg transition-colors ${
+                    hasActiveChild
+                      ? "bg-emerald-500 text-white"
+                      : "text-gray-300 hover:bg-slate-700"
+                  }`}
+                  title={isCollapsed ? item.label : ""}
+                >
+                  <item.icon className="w-5 h-5 flex-shrink-0" />
+                  {!isCollapsed && (
+                    <>
+                      <span className="text-sm flex-1 text-left">{item.label}</span>
+                      <ChevronDown 
+                        className={`w-4 h-4 transition-transform ${
+                          isExpanded ? 'rotate-180' : ''
+                        }`} 
+                      />
+                    </>
+                  )}
+                </button>
+                
+                {/* Submenu */}
+                {isExpanded && !isCollapsed && (
+                  <div className="mt-1 mb-2">
+                    {item.children.map((child, childIndex) => (
+                      <Link
+                        key={childIndex}
+                        to={child.path}
+                        className={`flex items-center gap-3 px-4 py-2 mx-2 ml-4 rounded-lg transition-colors ${
+                          isActive(child.path)
+                            ? "bg-emerald-600 text-white"
+                            : "text-gray-400 hover:bg-slate-700 hover:text-white"
+                        }`}
+                      >
+                        <child.icon className="w-4 h-4 flex-shrink-0" />
+                        <span className="text-sm">{child.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          } else {
+            // Render regular menu item
+            return (
+              <Link
+                key={index}
+                to={item.path}
+                className={`flex items-center gap-3 px-4 py-3 mx-2 rounded-lg transition-colors ${
+                  isActive(item.path)
+                    ? "bg-emerald-500 text-white"
+                    : "text-gray-300 hover:bg-slate-700"
+                }`}
+                title={isCollapsed ? item.label : ""}
+              >
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                {!isCollapsed && <span className="text-sm">{item.label}</span>}
+              </Link>
+            );
+          }
+        })}
       </nav>
 
       {/* Logout */}
