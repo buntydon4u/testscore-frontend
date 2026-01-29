@@ -20,7 +20,6 @@ import {
   TrendingUp,
   AlertCircle,
   Calendar,
-  PlayCircle,
   Target,
   Square,
   Clock,
@@ -56,6 +55,22 @@ export const sidebarLinks = {
       label: "Dashboard",
     },
     {
+      label: "Institutes",
+      icon: Building,
+      children: [
+        {
+          path: "/super-admin/institutes",
+          icon: Building,
+          label: "Manage Institutes",
+        },
+        {
+          path: "/super-admin/institute-owners",
+          icon: Users,
+          label: "Institute Owners",
+        },
+      ],
+    },
+    {
       label: "Master Data",
       icon: Database,
       children: [
@@ -63,11 +78,6 @@ export const sidebarLinks = {
           path: "/super-admin/users",
           icon: Users,
           label: "User Management",
-        },
-        {
-          path: "/super-admin/schools",
-          icon: Building,
-          label: "School Management",
         },
         {
           path: "/super-admin/streams",
@@ -98,39 +108,13 @@ export const sidebarLinks = {
       ],
     },
     {
-      label: "Academics",
-      icon: GraduationCap,
-      children: [
-        {
-          path: "/super-admin/students",
-          icon: Users,
-          label: "Student Management",
-        },
-        {
-          path: "/super-admin/exams",
-          icon: FileText,
-          label: "Exam Management",
-        },
-        {
-          path: "/super-admin/courses",
-          icon: BookMarked,
-          label: "Course Management",
-        },
-        {
-          path: "/super-admin/results",
-          icon: Award,
-          label: "Results",
-        },
-      ],
-    },
-    {
       label: "Reports & Analytics",
       icon: BarChart3,
       children: [
         {
           path: "/super-admin/analytics",
           icon: BarChart3,
-          label: "System Reports",
+          label: "Global Analytics",
         },
         {
           path: "/super-admin/audit-log",
@@ -164,118 +148,149 @@ export const sidebarLinks = {
   ADMIN: [
     { path: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
     {
-      label: "Master Data",
-      icon: Database,
+      label: "Institute Setup",
+      icon: Building,
       children: [
-        { path: "/admin/streams", icon: Beaker, label: "Stream Management" },
-        { path: "/admin/subjects", icon: BookOpen, label: "Subject Management" },
+        { path: "/admin/institute-profile", icon: Building, label: "Institute Profile" },
+        { path: "/admin/streams", icon: Beaker, label: "Manage Streams" },
+        { path: "/admin/subjects", icon: BookOpen, label: "Manage Subjects" },
+      ],
+    },
+    {
+      label: "People Management",
+      icon: Users,
+      children: [
+        { path: "/admin/students", icon: Users, label: "Manage Students" },
+        { path: "/admin/teachers", icon: Users, label: "Manage Teachers" },
+        { path: "/admin/staff", icon: Users, label: "Manage Staff" },
+      ],
+    },
+    {
+      label: "Academics",
+      icon: GraduationCap,
+      children: [
+        { path: "/admin/courses", icon: BookOpen, label: "Manage Courses" },
+        { path: "/admin/create-exam", icon: FileText, label: "Create Exam" },
+        { path: "/admin/exams", icon: FileText, label: "Manage Exams" },
+        { path: "/admin/results", icon: Award, label: "View Results" },
+        { path: "/admin/attendance", icon: Calendar, label: "Attendance Reports" },
       ],
     },
     {
       label: "Business",
       icon: Package,
       children: [
-        { path: "/admin/packages", icon: Box, label: "Package Management" },
-        { path: "/admin/orders", icon: ShoppingCart, label: "Order Management" },
-      ],
-    },
-    {
-      label: "Academics",
-      icon: GraduationCap,
-      children: [
-        { path: "/admin/students", icon: Users, label: "Manage Students" },
-        { path: "/admin/exams", icon: FileText, label: "Manage Exams" },
-        { path: "/admin/courses", icon: BookOpen, label: "Manage Courses" },
-        { path: "/admin/results", icon: Award, label: "View Results" },
-      ],
-    },
-    {
-      label: "System",
-      icon: Settings,
-      children: [
-        { path: "/admin/analytics", icon: BarChart3, label: "Analytics" },
-        { path: "/admin/system-config", icon: Settings, label: "System Configuration" },
-        { path: "/admin/settings", icon: Settings, label: "Settings" },
-        { path: "/admin/change-password", icon: Lock, label: "Change Password" },
-      ],
-    },
-  ] as SidebarItem[],
-  TEACHER: [
-    { path: "/teacher/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-    { path: "/teacher/profile", icon: User, label: "Profile" },
-    {
-      label: "Students",
-      icon: Users,
-      children: [
-        { path: "/teacher/students", icon: Users, label: "Students List" },
-        { path: "/teacher/students/view", icon: GraduationCap, label: "Manage Students" },
-      ],
-    },
-    {
-      label: "Exams",
-      icon: FileText,
-      children: [
-        { path: "/teacher/exams", icon: FileText, label: "Exams List" },
-        { path: "/teacher/exams/view", icon: FileText, label: "Manage Exams" },
-        { path: "/teacher/scheduled-tests", icon: Calendar, label: "Scheduled Tests" },
-        { path: "/teacher/exam-results", icon: Award, label: "Exam Results" },
-      ],
-    },
-    {
-      label: "Courses",
-      icon: BookOpen,
-      children: [
-        { path: "/teacher/courses", icon: BookOpen, label: "Courses" },
-        { path: "/teacher/sections/view", icon: BookOpen, label: "Manage Sections" },
-      ],
-    },
-    {
-      label: "Academics",
-      icon: GraduationCap,
-      children: [
-        { path: "/teacher/results", icon: Award, label: "Results" },
-        { path: "/teacher/attendance", icon: Calendar, label: "Attendance" },
-        { path: "/teacher/schedule", icon: Calendar, label: "Schedule" },
+        { path: "/admin/packages", icon: Box, label: "Create Packages" },
+        { path: "/admin/orders", icon: ShoppingCart, label: "View Orders" },
+        { path: "/admin/payments", icon: CreditCard, label: "Payment History" },
       ],
     },
     {
       label: "Reports",
       icon: BarChart3,
       children: [
-        { path: "/teacher/analytics", icon: BarChart3, label: "Analytics" },
-        { path: "/teacher/transactions", icon: CreditCard, label: "Transactions" },
+        { path: "/admin/analytics", icon: BarChart3, label: "Institute Analytics" },
+        { path: "/admin/performance", icon: TrendingUp, label: "Performance Reports" },
+      ],
+    },
+    {
+      label: "Settings",
+      icon: Settings,
+      children: [
+        { path: "/admin/settings", icon: Settings, label: "Institute Settings" },
+        { path: "/admin/change-password", icon: Lock, label: "Change Password" },
+      ],
+    },
+  ] as SidebarItem[],
+  TEACHER: [
+    { path: "/teacher/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/teacher/profile", icon: User, label: "My Profile" },
+    {
+      label: "Teaching",
+      icon: GraduationCap,
+      children: [
+        { path: "/teacher/my-students", icon: Users, label: "My Students" },
+        { path: "/teacher/classes", icon: BookOpen, label: "My Classes" },
+        { path: "/teacher/schedule", icon: Calendar, label: "Teaching Schedule" },
+      ],
+    },
+    {
+      label: "Exams & Tests",
+      icon: FileText,
+      children: [
+        { path: "/teacher/create-exam", icon: FileText, label: "Create Exam" },
+        { path: "/teacher/my-exams", icon: FileText, label: "My Exams" },
+        { path: "/teacher/scheduled-tests", icon: Calendar, label: "Scheduled Tests" },
+        { path: "/teacher/grade-exams", icon: Award, label: "Grade Exams" },
+      ],
+    },
+    {
+      label: "Content",
+      icon: BookMarked,
+      children: [
+        { path: "/teacher/streams", icon: Beaker, label: "View Streams" },
+        { path: "/teacher/subjects", icon: BookOpen, label: "View Subjects" },
+        { path: "/teacher/my-courses", icon: BookOpen, label: "My Courses" },
+        { path: "/teacher/create-content", icon: Target, label: "Create Content" },
+      ],
+    },
+    {
+      label: "Performance",
+      icon: BarChart3,
+      children: [
+        { path: "/teacher/results", icon: Award, label: "Student Results" },
+        { path: "/teacher/analytics", icon: BarChart3, label: "Performance Analytics" },
+        { path: "/teacher/attendance", icon: Calendar, label: "Attendance" },
+      ],
+    },
+    {
+      label: "Earnings",
+      icon: CreditCard,
+      children: [
+        { path: "/teacher/earnings", icon: CreditCard, label: "My Earnings" },
+        { path: "/teacher/transactions", icon: CreditCard, label: "Transaction History" },
       ],
     },
     { path: "/teacher/change-password", icon: Lock, label: "Change Password" },
   ] as SidebarItem[],
   STUDENT: [
     { path: "/student/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-    { path: "/student/profile", icon: User, label: "Profile" },
+    { path: "/student/profile", icon: User, label: "My Profile" },
     {
-      label: "My Packages",
-      icon: Package,
+      label: "Learning",
+      icon: BookOpen,
       children: [
-        { path: "/student/packages", icon: Package, label: "Browse Packages" },
-        { path: "/student/purchased-packages", icon: Package, label: "Purchased Packages" },
+        { path: "/student/my-courses", icon: BookOpen, label: "My Courses" },
+        { path: "/student/subjects", icon: BookMarked, label: "My Subjects" },
+        { path: "/student/assignments", icon: FileText, label: "Assignments" },
       ],
     },
     {
       label: "Exams",
       icon: FileText,
       children: [
-        { path: "/student/scheduled-exams", icon: Calendar, label: "Scheduled Exams" },
-        { path: "/student/complete-exam", icon: PlayCircle, label: "Complete Exam" },
-        { path: "/student/topic-test", icon: Target, label: "Topic Test" },
-        { path: "/student/section-test", icon: Square, label: "Section Test" },
-        { path: "/student/test-in-progress", icon: Clock, label: "Test In-Progress" },
-        { path: "/student/exam-result", icon: Award, label: "Exam Results" },
+        { path: "/student/upcoming-exams", icon: Calendar, label: "Upcoming Exams" },
+        { path: "/student/available-exams", icon: Target, label: "Available Exams" },
+        { path: "/student/exam-history", icon: Award, label: "Exam History" },
+        { path: "/student/exam-results", icon: Award, label: "My Results" },
+      ],
+    },
+    {
+      label: "Practice",
+      icon: Target,
+      children: [
+        { path: "/student/topic-tests", icon: Target, label: "Topic Tests" },
+        { path: "/student/section-tests", icon: Square, label: "Section Tests" },
+        { path: "/student/mock-tests", icon: Clock, label: "Mock Tests" },
       ],
     },
     {
       label: "Account",
       icon: Settings,
       children: [
-        { path: "/student/transactions", icon: CreditCard, label: "Transactions" },
+        { path: "/student/packages", icon: Package, label: "Browse Packages" },
+        { path: "/student/purchased-packages", icon: Package, label: "Purchased Packages" },
+        { path: "/student/transactions", icon: CreditCard, label: "Payment History" },
         { path: "/student/change-password", icon: Lock, label: "Change Password" },
       ],
     },

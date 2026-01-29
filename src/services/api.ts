@@ -70,6 +70,21 @@ class ApiClient {
           message: error.response?.data?.error || error.response?.data?.message || 'An error occurred',
           status: error.response?.status || 500,
         };
+        
+        // Handle token expiration
+        if (error.response?.status === 401 || 
+            (error.response?.data?.error && 
+             error.response.data.error.toLowerCase().includes('token'))) {
+          // Clear auth data
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('user');
+          
+          // Redirect to login if not already there
+          if (!window.location.pathname.includes('/login')) {
+            window.location.href = '/login';
+          }
+        }
+        
         throw apiError;
       }
     );

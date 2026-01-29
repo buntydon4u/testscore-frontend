@@ -1,4 +1,3 @@
-import { Layout } from "@/components/Layout";
 import { Card } from "@/components/Card";
 import { Table } from "@/components/Table";
 import studentResults from "@/data/studentResults.json";
@@ -23,26 +22,24 @@ export const Dashboard = () => {
   ];
 
   return (
-    <Layout role="student" userName="Jane Doe" userRole="Student">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Student Dashboard</h1>
+    <div>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">Student Dashboard</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <Card key={index} title={stat.title} value={stat.value} icon={stat.icon} color={stat.color} />
-          ))}
-        </div>
-
-        <div className="bg-white rounded-lg shadow mb-8">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Activities</h2>
-          </div>
-          <Table
-            headers={["Activity", "Date", "Status"]}
-            data={recentActivities.map(activity => [activity.activity, activity.date, activity.status])}
-          />
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {stats.map((stat, index) => (
+          <Card key={index} title={stat.title} value={stat.value} icon={stat.icon} color={stat.color} />
+        ))}
       </div>
-    </Layout>
+
+      <div className="bg-white rounded-lg shadow mb-8">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">Recent Activities</h2>
+        </div>
+        <Table
+          headers={["Activity", "Date", "Status"]}
+          data={recentActivities.map(activity => [activity.activity, activity.date, activity.status])}
+        />
+      </div>
+    </div>
   );
 };

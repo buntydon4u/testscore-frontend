@@ -7,7 +7,10 @@ interface LayoutProps {
   children?: ReactNode;
 }
 
-export const Layout = ({ userName, userRole, children }: LayoutProps) => {
+export const Layout = ({ userRole, userName, children }: LayoutProps) => {
+  console.log('userRole=====>', userRole);
+  console.log('userName=====>', userName);
+  console.log('children=====>', children);
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}

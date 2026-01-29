@@ -1,5 +1,4 @@
 import { BarChart3, Users, BookOpen, ClipboardList, TrendingUp, Clock } from "lucide-react";
-import { Layout } from "@/components/Layout";
 
 export const Dashboard = () => {
   const stats = [
@@ -24,11 +23,10 @@ export const Dashboard = () => {
   ];
 
   return (
-    <Layout role="teacher" userName="John Teacher" userRole="Teacher">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Teacher Dashboard</h1>
+    <>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">Teacher Dashboard</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat, index) => (
             <div key={index} className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center justify-between">
@@ -166,7 +164,6 @@ export const Dashboard = () => {
             </div>
           </button>
         </div>
-      </div>
-    </Layout>
+    </>
   );
 };

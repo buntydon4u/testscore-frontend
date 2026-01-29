@@ -1,21 +1,25 @@
 import { AdminLayout } from './AdminLayout';
 import { SuperAdminLayout } from './SuperAdminLayout';
 import { TeacherLayout } from './TeacherLayout';
-import { StudentLayout } from './StudentLayout';
-import { ParentLayout } from './ParentLayout';
-import { GuestLayout } from './GuestLayout';
+import { GenericLayout } from './GenericLayout';
 
-// Placeholder layouts for other roles - using AdminLayout for now
-const InstituteOwnerLayout = AdminLayout;
-const DefaultLayout = AdminLayout;
-
+// Use GenericLayout for all roles that don't need custom layouts
+// This ensures consistent behavior and easy maintenance
 export const LayoutRegistry = {
+  super_admin: SuperAdminLayout,
   SUPER_ADMIN: SuperAdminLayout,
+  admin: AdminLayout,
   ADMIN: AdminLayout,
+  teacher: TeacherLayout,
   TEACHER: TeacherLayout,
-  STUDENT: StudentLayout,
-  PARENT: ParentLayout,
-  GUEST: GuestLayout,
-  INSTITUTE_OWNER: InstituteOwnerLayout,
-  DEFAULT: DefaultLayout
+  student: GenericLayout,
+  STUDENT: GenericLayout,
+  parent: GenericLayout,
+  PARENT: GenericLayout,
+  guest: GenericLayout,
+  GUEST: GenericLayout,
+  institute_owner: GenericLayout,
+  INSTITUTE_OWNER: GenericLayout,
+  default: GenericLayout,
+  DEFAULT: GenericLayout
 };

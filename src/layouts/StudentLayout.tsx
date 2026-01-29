@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { StudentSidebar } from "../components/StudentSidebar";
+import { GenericSidebar } from "../components/GenericSidebar";
 import { Topbar } from "../components/layout/Topbar";
 import { authService } from "../services/auth";
 
@@ -14,7 +14,7 @@ export const StudentLayout = ({ children }: StudentLayoutProps) => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <StudentSidebar />
+      <GenericSidebar />
       <div className="flex-1 ml-64">
         <Topbar userName={userName} userRole={userRole} />
         <main className="p-6">{children}</main>

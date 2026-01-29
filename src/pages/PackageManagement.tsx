@@ -5,6 +5,7 @@ import { Package } from '../services/packageApi';
 import toast from 'react-hot-toast';
 
 export const PackageManagement: React.FC = () => {
+  console.log("Hello I am here");
   const [showForm, setShowForm] = useState(false);
   const [editingPackage, setEditingPackage] = useState<Package | undefined>();
   const [refreshKey, setRefreshKey] = useState(0);

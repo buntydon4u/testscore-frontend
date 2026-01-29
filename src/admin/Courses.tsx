@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient } from '../../services/api';
+import { apiClient } from '@/services/api';
 import { Layout } from '@/components/Layout';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -8,7 +8,7 @@ import { ConfirmDeleteModal } from '@/components/ConfirmDeleteModal';
 import { CourseCreateModal } from '@/components/CourseCreateModal';
 import { CourseEditModal } from '@/components/CourseEditModal';
 import { AdvancedTable } from '@/components/AdvancedTable';
-import { useDebounce } from '../../hooks/useDebounce';
+import { useDebounce } from '@/hooks/useDebounce';
 
 interface Course {
   id: string;

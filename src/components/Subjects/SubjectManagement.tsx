@@ -18,6 +18,7 @@ export const SubjectManagement: React.FC = () => {
   };
 
   const handleSave = () => {
+    console.log("Subject saved event trigger");
     setShowForm(false);
     setEditingSubject(undefined);
     // Refresh the list by triggering a re-render

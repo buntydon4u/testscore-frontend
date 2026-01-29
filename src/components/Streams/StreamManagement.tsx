@@ -4,6 +4,7 @@ import { StreamList } from './StreamList';
 import { StreamForm } from './StreamForm';
 
 export const StreamManagement: React.FC = () => {
+  console.log('StreamManagement: Component rendering');
   const [showForm, setShowForm] = useState(false);
   const [editingStream, setEditingStream] = useState<Stream | undefined>();
 
@@ -20,7 +21,7 @@ export const StreamManagement: React.FC = () => {
   const handleSave = () => {
     setShowForm(false);
     setEditingStream(undefined);
-    // Refresh the list by triggering a re-render
+    // Refresh the list
     window.location.reload();
   };
 

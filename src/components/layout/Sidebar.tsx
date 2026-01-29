@@ -57,6 +57,7 @@ export const Sidebar = ({ role, portal }: SidebarProps) => {
   const getRoleLabel = (): string => {
     const user = authService.getUser();
     const role = user?.role || 'STUDENT';
+    console.log('role======>', role);
     switch (role) {
       case "STUDENT":
         return "Student Portal";
