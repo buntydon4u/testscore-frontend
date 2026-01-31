@@ -89,6 +89,16 @@ export const sidebarLinks = {
           icon: BookOpen,
           label: "Subject Management",
         },
+        {
+          path: "/super-admin/create-exam",
+          icon: FileText,
+          label: "Create Exam",
+        },
+        {
+          path: "/super-admin/exams",
+          icon: FileText,
+          label: "Manage Exams",
+        },
       ],
     },
     {

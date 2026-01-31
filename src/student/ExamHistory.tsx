@@ -4,6 +4,7 @@ import { examService } from '../services/exam';
 import { Enrollment, EnrollmentStatus } from '../types/exam';
 import { format, isPast } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export const ExamHistory = () => {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
@@ -18,12 +19,22 @@ export const ExamHistory = () => {
     try {
       setLoading(true);
       const data = await examService.getMyEnrollments();
+      console.log('Raw enrollments data (history):', data);
       
-      // Filter only past enrollments with valid exam and schedule data
+      // Filter only past enrollments with valid schedule and exam data
       const history = data.filter(enrollment => {
-        if (!enrollment.schedule || !enrollment.exam) return false;
+        if (!enrollment.schedule || !enrollment.schedule.exam) {
+          console.warn('Enrollment missing schedule or exam:', enrollment.id);
+          return false;
+        }
+        
+        // Include past exams AND cancelled exams
         const endDate = new Date(enrollment.schedule.endDateTime);
-        return isPast(endDate);
+        const isPastExam = isPast(endDate);
+        const isCancelled = enrollment.status === 'CANCELLED';
+        
+        console.log(`Enrollment ${enrollment.id}: end=${endDate.toISOString()}, isPast=${isPastExam}, status=${enrollment.status}`);
+        return isPastExam || isCancelled;
       });
 
       // Sort by end date (most recent first)
@@ -36,6 +47,7 @@ export const ExamHistory = () => {
       setEnrollments(history);
     } catch (error) {
       console.error('Failed to load exam history:', error);
+      toast.error(error.message || 'Failed to load exam history');
     } finally {
       setLoading(false);
     }
@@ -64,7 +76,7 @@ export const ExamHistory = () => {
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Exam History</h1>
         <p className="text-gray-600">Your past exams and results</p>
       </div>
-
+      
       {enrollments.length === 0 ? (
         <div className="bg-white rounded-lg shadow p-12 text-center">
           <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
@@ -80,10 +92,10 @@ export const ExamHistory = () => {
         <div className="space-y-4">
           {enrollments.map((enrollment) => {
             // Safety checks
-            if (!enrollment.schedule || !enrollment.exam) return null;
+            if (!enrollment.schedule || !enrollment.schedule.exam) return null;
             
             const schedule = enrollment.schedule;
-            const exam = enrollment.exam;
+            const exam = enrollment.schedule.exam;
             const startDate = new Date(schedule.startDateTime);
 
             return (
@@ -97,6 +109,9 @@ export const ExamHistory = () => {
                       <h3 className="text-lg font-semibold text-gray-900">
                         {exam.title}
                       </h3>
+                      <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                        {exam.examType}
+                      </span>
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(enrollment.status)}`}>
                         {enrollment.status}
                       </span>

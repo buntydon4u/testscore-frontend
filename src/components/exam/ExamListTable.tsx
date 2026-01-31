@@ -27,6 +27,17 @@ export const ExamListTable = ({
 }: ExamListTableProps) => {
   const navigate = useNavigate();
 
+  // Don't render if exams is not yet loaded
+  if (!exams) {
+    return (
+      <div className="bg-white rounded-lg shadow p-12">
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
+        </div>
+      </div>
+    );
+  }
+
   const handleView = (exam: Exam) => {
     navigate(`${baseRoute}/exam/${exam.id}`);
   };

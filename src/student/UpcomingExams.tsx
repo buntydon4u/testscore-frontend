@@ -4,6 +4,7 @@ import { examService } from '../services/exam';
 import { Enrollment } from '../types/exam';
 import { format, isPast, isFuture, isToday } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export const UpcomingExams = () => {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
@@ -18,12 +19,25 @@ export const UpcomingExams = () => {
     try {
       setLoading(true);
       const data = await examService.getMyEnrollments();
+      console.log('Raw enrollments data:', data);
       
-      // Filter only upcoming enrollments with valid exam and schedule data
+      // Filter only upcoming enrollments with valid schedule and exam data
       const upcoming = data.filter(enrollment => {
-        if (!enrollment.schedule || !enrollment.exam) return false;
+        if (!enrollment.schedule || !enrollment.schedule.exam) {
+          console.warn('Enrollment missing schedule or exam:', enrollment.id);
+          return false;
+        }
+        
+        // Skip cancelled enrollments
+        if (enrollment.status === 'CANCELLED') {
+          console.log(`Enrollment ${enrollment.id}: status=CANCELLED, skipping`);
+          return false;
+        }
+        
         const startDate = new Date(enrollment.schedule.startDateTime);
-        return isFuture(startDate) || isToday(startDate);
+        const isUpcoming = isFuture(startDate) || isToday(startDate);
+        console.log(`Enrollment ${enrollment.id}: start=${startDate.toISOString()}, isUpcoming=${isUpcoming}, status=${enrollment.status}`);
+        return isUpcoming;
       });
 
       // Sort by start date
@@ -34,8 +48,9 @@ export const UpcomingExams = () => {
       });
 
       setEnrollments(upcoming);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load enrollments:', error);
+      toast.error(error.message || 'Failed to load enrollments');
     } finally {
       setLoading(false);
     }
@@ -45,11 +60,16 @@ export const UpcomingExams = () => {
     if (!confirm('Are you sure you want to cancel this enrollment?')) return;
 
     try {
-      await examService.cancelEnrollment(enrollment.examId, enrollment.scheduleId);
+      if (!enrollment.schedule) {
+        toast.error('Schedule data not available');
+        return;
+      }
+      await examService.cancelEnrollment(enrollment.schedule.examId, enrollment.scheduleId);
       loadEnrollments();
-    } catch (error) {
+      toast.success('Enrollment cancelled successfully');
+    } catch (error: any) {
       console.error('Failed to cancel enrollment:', error);
-      alert('Failed to cancel enrollment. Please try again.');
+      toast.error(error.message || 'Failed to cancel enrollment. Please try again.');
     }
   };
 
@@ -71,7 +91,7 @@ export const UpcomingExams = () => {
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Upcoming Exams</h1>
         <p className="text-gray-600">Your scheduled exams</p>
       </div>
-
+      
       {enrollments.length === 0 ? (
         <div className="bg-white rounded-lg shadow p-12 text-center">
           <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
@@ -87,10 +107,10 @@ export const UpcomingExams = () => {
         <div className="space-y-4">
           {enrollments.map((enrollment) => {
             // Safety checks
-            if (!enrollment.schedule || !enrollment.exam) return null;
+            if (!enrollment.schedule || !enrollment.schedule.exam) return null;
             
             const schedule = enrollment.schedule;
-            const exam = enrollment.exam;
+            const exam = enrollment.schedule.exam;
             const startDate = new Date(schedule.startDateTime);
             const endDate = new Date(schedule.endDateTime);
             const isStartingSoon = isToday(startDate);

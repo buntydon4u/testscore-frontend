@@ -4,11 +4,19 @@ import { Save, X } from 'lucide-react';
 import { examService } from '../../services/exam';
 import { ExamType, DeliveryType, CreateExamDto } from '../../types/exam';
 
-export const CreateExamForm = () => {
+interface CreateExamFormProps {
+  initialData?: any;
+  onSubmit?: (data: any) => void;
+  isEdit?: boolean;
+  loading?: boolean;
+}
+
+export const CreateExamForm = ({ initialData, onSubmit, isEdit = false, loading: externalLoading }: CreateExamFormProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isAdmin = location.pathname.includes('/admin/');
-  const [loading, setLoading] = useState(false);
+  const isAdmin = location.pathname.includes('/admin/') || location.pathname.includes('/super-admin/');
+  const [internalLoading, setInternalLoading] = useState(false);
+  const loading = externalLoading !== undefined ? externalLoading : internalLoading;
   const [boards, setBoards] = useState<any[]>([]);
   const [series, setSeries] = useState<any[]>([]);
   const [classes, setClasses] = useState<any[]>([]);
@@ -45,6 +53,27 @@ export const CreateExamForm = () => {
       loadBlueprints(formData.classId);
     }
   }, [formData.classId]);
+
+  // Initialize form with initial data if provided
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        title: initialData.title || '',
+        description: initialData.description || '',
+        examType: initialData.examType || ExamType.PRACTICE,
+        deliveryType: initialData.deliveryType || DeliveryType.ONLINE,
+        duration: initialData.duration || 60,
+        totalMarks: initialData.totalMarks || 100,
+        isNegativeMarking: initialData.isNegativeMarking || false,
+        negativeMarkingValue: initialData.negativeMarkingValue || 0,
+        isPracticeMode: initialData.isPracticeMode !== undefined ? initialData.isPracticeMode : false,
+        classId: initialData.classId || null,
+        boardId: initialData.boardId || null,
+        seriesId: initialData.seriesId || null,
+        blueprintId: initialData.blueprintId || null,
+      });
+    }
+  }, [initialData]);
 
   const loadDropdownData = async () => {
     try {
@@ -98,18 +127,26 @@ export const CreateExamForm = () => {
       return;
     }
 
+    // Use custom submit handler if provided (for edit mode)
+    if (onSubmit) {
+      onSubmit(formData);
+      return;
+    }
+
     try {
-      setLoading(true);
+      setInternalLoading(true);
       const exam = await examService.createExam(formData);
       alert('Exam created successfully!');
       // Redirect to exam list based on role
-      const redirectPath = isAdmin ? '/admin/exams' : '/teacher/my-exams';
+      const redirectPath = location.pathname.includes('/super-admin/') ? '/super-admin/exams' : 
+                          isAdmin ? '/admin/exams' : '/teacher/my-exams';
+        
       navigate(redirectPath);
     } catch (error: any) {
       console.error('Failed to create exam:', error);
       alert(error.message || 'Failed to create exam. Please try again.');
     } finally {
-      setLoading(false);
+      setInternalLoading(false);
     }
   };
 

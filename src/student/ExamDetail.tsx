@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, Award, BookOpen, AlertCircle, Calendar } from 'lucide
 import { examService } from '../services/exam';
 import { Exam, ExamSchedule } from '../types/exam';
 import { ScheduleCard } from '../components/exam/ScheduleCard';
+import toast from 'react-hot-toast';
 
 export const ExamDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -50,6 +51,7 @@ export const ExamDetail = () => {
       setEnrollments(enrolledScheduleIds);
     } catch (error) {
       console.error('Failed to load enrollments:', error);
+      toast.error('Failed to load enrollments');
     }
   };
 
@@ -58,10 +60,10 @@ export const ExamDetail = () => {
       await examService.enrollInSchedule(id!, schedule.id);
       loadMyEnrollments();
       loadSchedules();
-      alert('Successfully enrolled!');
-    } catch (error) {
+      toast.success('Successfully enrolled!');
+    } catch (error: any) {
       console.error('Failed to enroll:', error);
-      alert('Failed to enroll. Please try again.');
+      toast.error(error.message || 'Failed to enroll. Please try again.');
     }
   };
 
@@ -72,10 +74,10 @@ export const ExamDetail = () => {
       await examService.cancelEnrollment(id!, schedule.id);
       loadMyEnrollments();
       loadSchedules();
-      alert('Enrollment cancelled successfully');
-    } catch (error) {
+      toast.success('Enrollment cancelled successfully');
+    } catch (error: any) {
       console.error('Failed to cancel enrollment:', error);
-      alert('Failed to cancel enrollment. Please try again.');
+      toast.error(error.message || 'Failed to cancel enrollment. Please try again.');
     }
   };
 

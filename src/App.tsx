@@ -19,6 +19,7 @@ import { ExamList as AdminExams } from "./admin/ExamList";
 import { CreateExam as AdminCreateExam } from "./admin/CreateExam";
 import { ExamDetailView as AdminExamDetail } from "./admin/ExamDetailView";
 import { ManageSchedules as AdminManageSchedules } from "./admin/ManageSchedules";
+import { EditExam as AdminEditExam } from "./admin/EditExam";
 import { Courses } from "./admin/Courses";
 import { Results } from "./admin/Results";
 import { Attendance } from "./pages/Attendance";
@@ -38,6 +39,11 @@ import { SystemConfig as SuperAdminSystemConfig } from "./super-admin/SystemConf
 import { AuditLog as SuperAdminAuditLog } from "./super-admin/AuditLog";
 import { Security as SuperAdminSecurity } from "./super-admin/Security";
 import { ChangePassword as SuperAdminChangePassword } from "./super-admin/ChangePassword";
+import { CreateExam as SuperAdminCreateExam } from "./admin/CreateExam";
+import { ExamList as SuperAdminExams } from "./super-admin/ExamList";
+import { ExamDetailView as SuperAdminExamDetail } from "./admin/ExamDetailView";
+import { ManageSchedules as SuperAdminManageSchedules } from "./admin/ManageSchedules";
+import { EditExam as SuperAdminEditExam } from "./super-admin/EditExam";
 
 // Teacher Components
 import { Dashboard as TeacherDashboard } from "./teacher/Dashboard";
@@ -49,6 +55,7 @@ import { CreateExam as TeacherCreateExam } from "./teacher/CreateExam";
 import { ExamList as TeacherMyExams } from "./teacher/ExamList";
 import { ExamDetailView as TeacherExamDetail } from "./teacher/ExamDetailView";
 import { ManageSchedules as TeacherManageSchedules } from "./teacher/ManageSchedules";
+import { EditExam as TeacherEditExam } from "./teacher/EditExam";
 import { ScheduledTests as TeacherScheduledTests } from "./teacher/ScheduledTests";
 import { ExamResults as TeacherExamResults } from "./teacher/ExamResults";
 import { Results as TeacherResults } from "./pages/Results";
@@ -100,6 +107,9 @@ const AdminRoutes = () => (
     <Route path="students" element={<AdminStudents />} />
     <Route path="create-exam" element={<AdminCreateExam />} />
     <Route path="exams" element={<AdminExams />} />
+    <Route path="exam/:id" element={<AdminExamDetail />} />
+    <Route path="exam/:id/edit" element={<AdminEditExam />} />
+    <Route path="exam/:id/schedules" element={<AdminManageSchedules />} />
     <Route path="courses" element={<Courses />} />
     <Route path="results" element={<Results />} />
     <Route path="attendance" element={<Attendance />} />
@@ -127,6 +137,11 @@ const SuperAdminRoutes = () => (
     <Route path="packages" element={<PackageManagement />} />
     <Route path="streams" element={<StreamManagement />} />
     <Route path="subjects" element={<SubjectManagement />} />
+    <Route path="create-exam" element={<SuperAdminCreateExam />} />
+    <Route path="exams" element={<SuperAdminExams />} />
+    <Route path="exam/:id" element={<SuperAdminExamDetail />} />
+    <Route path="exam/:id/edit" element={<SuperAdminEditExam />} />
+    <Route path="exam/:id/schedules" element={<SuperAdminManageSchedules />} />
     <Route path="orders" element={<OrderManagement />} />
     <Route path="change-password" element={<SuperAdminChangePassword />} />
     <Route path="*" element={<Navigate to="/super-admin/users" replace />} />
@@ -144,6 +159,7 @@ const TeacherRoutes = () => (
     <Route path="create-exam" element={<TeacherCreateExam />} />
     <Route path="my-exams" element={<TeacherMyExams />} />
     <Route path="exam/:id" element={<TeacherExamDetail />} />
+    <Route path="exam/:id/edit" element={<TeacherEditExam />} />
     <Route path="exam/:id/schedules" element={<TeacherManageSchedules />} />
     <Route path="scheduled-tests" element={<TeacherScheduledTests />} />
     <Route path="exam-results" element={<TeacherExamResults />} />
@@ -156,6 +172,8 @@ const TeacherRoutes = () => (
     <Route path="manage-sections" element={<TeacherManageSections />} />
     <Route path="my-courses" element={<TeacherMyCourses />} />
     <Route path="create-content" element={<TeacherCreateContent />} />
+    <Route path="streams" element={<StreamManagement />} />
+    <Route path="subjects" element={<SubjectManagement />} />
     <Route path="*" element={<Navigate to="/teacher/dashboard" replace />} />
   </Routes>
 );
