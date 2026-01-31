@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "date": "2024-01-15",
+    "amount": 150.00,
+    "description": "Mathematics Exam Fee"
+  },
+  {
+    "id": 2,
+    "date": "2024-02-01",
+    "amount": 200.00,
+    "description": "Physics Course Revenue"
+  },
+  {
+    "id": 3,
+    "date": "2024-02-15",
+    "amount": 100.00,
+    "description": "Chemistry Lab Fee"
+  },
+  {
+    "id": 4,
+    "date": "2024-03-01",
+    "amount": 175.00,
+    "description": "Biology Test Fee"
+  }
+]
