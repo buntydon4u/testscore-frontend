@@ -44,6 +44,9 @@ class ApiClient {
       headers: {
         'Content-Type': 'application/json',
       },
+      // IMPORTANT: Do NOT set withCredentials: true to avoid CORS issues
+      // Cookies and credentials will NOT be sent with requests
+      withCredentials: false,
     });
 
     // Request interceptor to add auth token
