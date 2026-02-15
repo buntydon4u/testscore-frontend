@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, Award, BookOpen, AlertCircle, Calendar, Edit } from '
 import { examService } from '../services/exam';
 import { Exam, ExamSchedule } from '../types/exam';
 import { ScheduleCard } from '../components/exam/ScheduleCard';
+import { ExamQuestionUpload } from '../components/exam/ExamQuestionUpload';
 
 export const ExamDetailView = () => {
   const { id } = useParams<{ id: string }>();
@@ -57,13 +58,21 @@ export const ExamDetailView = () => {
           <ArrowLeft className="w-5 h-5" />
           Back
         </button>
-        <button
-          onClick={() => navigate(`/teacher/exam/${id}/edit`)}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors"
-        >
-          <Edit className="w-5 h-5" />
-          Edit Exam
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate(`/teacher/exam/${id}/questions`)}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+          >
+            View Questions
+          </button>
+          <button
+            onClick={() => navigate(`/teacher/exam/${id}/edit`)}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors"
+          >
+            <Edit className="w-5 h-5" />
+            Edit Exam
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
@@ -122,6 +131,10 @@ export const ExamDetailView = () => {
             </div>
           )}
         </div>
+      </div>
+
+      <div className="mb-6">
+        <ExamQuestionUpload examId={id!} />
       </div>
 
       <div className="bg-white rounded-lg shadow-lg p-6">

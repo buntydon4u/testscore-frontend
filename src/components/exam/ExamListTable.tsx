@@ -26,6 +26,12 @@ export const ExamListTable = ({
   baseRoute 
 }: ExamListTableProps) => {
   const navigate = useNavigate();
+  const formatDate = (value?: string) => {
+    if (!value) return '-';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '-';
+    return date.toLocaleDateString();
+  };
 
   // Don't render if exams is not yet loaded
   if (!exams) {
@@ -67,6 +73,9 @@ export const ExamListTable = ({
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Class
               </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Created
+              </th>
               {showActions && (
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -77,7 +86,7 @@ export const ExamListTable = ({
           <tbody className="bg-white divide-y divide-gray-200">
             {exams.length === 0 ? (
               <tr>
-                <td colSpan={showActions ? 6 : 5} className="px-6 py-12 text-center text-gray-500">
+                <td colSpan={showActions ? 7 : 6} className="px-6 py-12 text-center text-gray-500">
                   No exams found
                 </td>
               </tr>
@@ -101,6 +110,9 @@ export const ExamListTable = ({
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {exam.class?.name || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {formatDate(exam.createdAt)}
                   </td>
                   {showActions && (
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

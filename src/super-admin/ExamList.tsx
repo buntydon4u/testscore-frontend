@@ -31,16 +31,22 @@ export const ExamList = () => {
   const loadExams = async () => {
     try {
       setLoading(true);
+      console.log('Loading exams with params:', searchParams);
       const response = await examService.listExams(searchParams);
-      setExams(response.exams);
+      console.log('API response:', response);
+      
+      // The API returns data in the format: { data: [...], meta: {...} }
+      setExams(response.data || []);
       setPagination({
-        total: response.total,
-        page: response.page,
-        limit: response.limit,
-        totalPages: response.totalPages,
+        total: response.meta?.total || 0,
+        page: response.meta?.page || 1,
+        limit: response.meta?.limit || 10,
+        totalPages: response.meta?.totalPages || 0,
       });
     } catch (error) {
       console.error('Failed to load exams:', error);
+      console.error('Error details:', error.response || error);
+      setExams([]);
     } finally {
       setLoading(false);
     }

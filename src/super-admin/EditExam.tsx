@@ -51,6 +51,7 @@ export const EditExam = () => {
         seriesId: formData.seriesId,
         blueprintId: formData.blueprintId,
         instructions: formData.instructions,
+        subjectIds: formData.subjectIds,
       };
 
       await examService.updateExam(id, updateData);

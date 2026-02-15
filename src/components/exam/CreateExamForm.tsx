@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Save, X } from 'lucide-react';
 import { examService } from '../../services/exam';
+import { subjectService, Subject } from '../../services/subjectApi';
 import { ExamType, DeliveryType, CreateExamDto } from '../../types/exam';
 
 interface CreateExamFormProps {
@@ -21,6 +22,7 @@ export const CreateExamForm = ({ initialData, onSubmit, isEdit = false, loading:
   const [series, setSeries] = useState<any[]>([]);
   const [classes, setClasses] = useState<any[]>([]);
   const [blueprints, setBlueprints] = useState<any[]>([]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
 
   const [formData, setFormData] = useState<CreateExamDto>({
     title: '',
@@ -36,6 +38,7 @@ export const CreateExamForm = ({ initialData, onSubmit, isEdit = false, loading:
     boardId: null,
     seriesId: null,
     blueprintId: null,
+    subjectIds: [],
   });
 
   useEffect(() => {
@@ -57,6 +60,12 @@ export const CreateExamForm = ({ initialData, onSubmit, isEdit = false, loading:
   // Initialize form with initial data if provided
   useEffect(() => {
     if (initialData) {
+      const mappedSubjectIds = Array.isArray(initialData.subjectIds)
+        ? initialData.subjectIds
+        : (initialData.examSubjects || [])
+            .map((entry: any) => entry?.subject?.id || entry?.subjectId || entry?.subject?.subjectId)
+            .filter(Boolean);
+
       setFormData({
         title: initialData.title || '',
         description: initialData.description || '',
@@ -71,18 +80,21 @@ export const CreateExamForm = ({ initialData, onSubmit, isEdit = false, loading:
         boardId: initialData.boardId || null,
         seriesId: initialData.seriesId || null,
         blueprintId: initialData.blueprintId || null,
+        subjectIds: Array.from(new Set(mappedSubjectIds)),
       });
     }
   }, [initialData]);
 
   const loadDropdownData = async () => {
     try {
-      const [boardsData, classesData] = await Promise.all([
+      const [boardsData, classesData, subjectsData] = await Promise.all([
         examService.getBoards(),
         examService.getClasses(),
+        subjectService.getSubjects(),
       ]);
       setBoards(boardsData);
       setClasses(classesData);
+      setSubjects(subjectsData);
     } catch (error) {
       console.error('Failed to load dropdown data:', error);
     }
@@ -119,11 +131,35 @@ export const CreateExamForm = ({ initialData, onSubmit, isEdit = false, loading:
     }
   };
 
+  const handleToggleSubject = (subjectId: string) => {
+    setFormData(prev => {
+      const exists = prev.subjectIds.includes(subjectId);
+      return {
+        ...prev,
+        subjectIds: exists
+          ? prev.subjectIds.filter(id => id !== subjectId)
+          : [...prev.subjectIds, subjectId],
+      };
+    });
+  };
+
+  const handleRemoveSubject = (subjectId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      subjectIds: prev.subjectIds.filter(id => id !== subjectId),
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.title || !formData.description) {
       alert('Please fill in all required fields');
+      return;
+    }
+
+    if (!formData.subjectIds || formData.subjectIds.length === 0) {
+      alert('Please select at least one subject');
       return;
     }
 
@@ -185,6 +221,64 @@ export const CreateExamForm = ({ initialData, onSubmit, isEdit = false, loading:
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               placeholder="Describe the exam..."
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Subjects <span className="text-red-500">*</span>
+            </label>
+            <div className="w-full rounded-lg border border-gray-300 p-3">
+              {subjects.length === 0 ? (
+                <p className="text-sm text-gray-500">No subjects available</p>
+              ) : (
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {subjects.map(subject => {
+                    const checked = formData.subjectIds.includes(subject.id);
+                    return (
+                      <label
+                        key={subject.id}
+                        className={`flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm transition ${
+                          checked ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-gray-200 bg-white text-gray-700'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          name="subjectIds"
+                          value={subject.id}
+                          checked={checked}
+                          onChange={() => handleToggleSubject(subject.id)}
+                          className="h-4 w-4 text-emerald-600 focus:ring-emerald-500"
+                        />
+                        <span>{subject.name}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+            {formData.subjectIds.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {formData.subjectIds.map(subjectId => {
+                  const subject = subjects.find(item => item.id === subjectId);
+                  return (
+                    <span
+                      key={subjectId}
+                      className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-sm text-emerald-700"
+                    >
+                      {subject?.name || 'Unknown Subject'}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSubject(subjectId)}
+                        className="text-emerald-700 hover:text-emerald-900"
+                        aria-label={`Remove ${subject?.name || 'subject'}`}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

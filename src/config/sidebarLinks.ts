@@ -99,6 +99,16 @@ export const sidebarLinks = {
           icon: FileText,
           label: "Manage Exams",
         },
+        {
+          path: "/super-admin/question-banks",
+          icon: Database,
+          label: "Question Banks",
+        },
+        {
+          path: "/super-admin/questions",
+          icon: Target,
+          label: "All Questions",
+        },
       ],
     },
     {
@@ -187,6 +197,14 @@ export const sidebarLinks = {
       ],
     },
     {
+      label: "Content Management",
+      icon: Database,
+      children: [
+        { path: "/admin/question-banks", icon: Database, label: "Question Banks" },
+        { path: "/admin/questions", icon: Target, label: "All Questions" },
+      ],
+    },
+    {
       label: "Business",
       icon: Package,
       children: [
@@ -242,6 +260,8 @@ export const sidebarLinks = {
         { path: "/teacher/subjects", icon: BookOpen, label: "View Subjects" },
         { path: "/teacher/my-courses", icon: BookOpen, label: "My Courses" },
         { path: "/teacher/create-content", icon: Target, label: "Create Content" },
+        { path: "/teacher/question-banks", icon: Database, label: "Question Banks" },
+        { path: "/teacher/questions", icon: Target, label: "All Questions" },
       ],
     },
     {

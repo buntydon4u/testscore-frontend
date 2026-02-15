@@ -33,6 +33,7 @@ export interface Exam {
   negativeMarkingValue: number;
   isPracticeMode: boolean;
   blueprintId: string | null;
+  examSubjects?: ExamSubject[];
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
@@ -123,6 +124,13 @@ export interface AcademicBoard {
   updatedAt: string;
 }
 
+export interface ExamSubject {
+  subject: {
+    id: string;
+    name: string;
+  };
+}
+
 export interface CreateExamDto {
   title: string;
   description: string;
@@ -137,6 +145,7 @@ export interface CreateExamDto {
   negativeMarkingValue: number;
   isPracticeMode: boolean;
   blueprintId?: string | null;
+  subjectIds: string[];
 }
 
 export interface UpdateExamDto {
@@ -153,6 +162,7 @@ export interface UpdateExamDto {
   negativeMarkingValue?: number;
   isPracticeMode?: boolean;
   blueprintId?: string | null;
+  subjectIds?: string[];
 }
 
 export interface CreateScheduleDto {

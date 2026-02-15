@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Clock, Award, BookOpen, AlertCircle, Calendar, Edit } from 'lucide-react';
 import { examService } from '../services/exam';
 import { Exam, ExamSchedule } from '../types/exam';
 import { ScheduleCard } from '../components/exam/ScheduleCard';
+import { ExamQuestionUpload } from '../components/exam/ExamQuestionUpload';
 
 export const ExamDetailView = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [exam, setExam] = useState<Exam | null>(null);
   const [schedules, setSchedules] = useState<ExamSchedule[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Determine the base route based on current path
+  const getBaseRoute = () => {
+    if (location.pathname.includes('/super-admin/')) return '/super-admin';
+    if (location.pathname.includes('/teacher/')) return '/teacher';
+    return '/admin';
+  };
 
   useEffect(() => {
     if (id) {
@@ -57,13 +66,21 @@ export const ExamDetailView = () => {
           <ArrowLeft className="w-5 h-5" />
           Back
         </button>
-        <button
-          onClick={() => navigate(`/admin/exam/${id}/edit`)}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors"
-        >
-          <Edit className="w-5 h-5" />
-          Edit Exam
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate(`${getBaseRoute()}/exam/${id}/questions`)}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+          >
+            View Questions
+          </button>
+          <button
+            onClick={() => navigate(`${getBaseRoute()}/exam/${id}/edit`)}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors"
+          >
+            <Edit className="w-5 h-5" />
+            Edit Exam
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
@@ -124,6 +141,10 @@ export const ExamDetailView = () => {
         </div>
       </div>
 
+      <div className="mb-6">
+        <ExamQuestionUpload examId={id!} />
+      </div>
+
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
@@ -131,7 +152,7 @@ export const ExamDetailView = () => {
             <h2 className="text-xl font-bold text-gray-900">Schedules</h2>
           </div>
           <button
-            onClick={() => navigate(`/admin/exam/${id}/schedules`)}
+            onClick={() => navigate(`${getBaseRoute()}/exam/${id}/schedules`)}
             className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors text-sm font-medium"
           >
             Manage Schedules
@@ -142,7 +163,7 @@ export const ExamDetailView = () => {
           <div className="text-center py-12">
             <p className="text-gray-500 mb-4">No schedules created yet</p>
             <button
-              onClick={() => navigate(`/admin/exam/${id}/schedules`)}
+              onClick={() => navigate(`${getBaseRoute()}/exam/${id}/schedules`)}
               className="px-6 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
             >
               Create Schedule

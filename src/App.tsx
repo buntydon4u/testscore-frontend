@@ -18,8 +18,13 @@ import { Students as AdminStudents } from "./admin/Students";
 import { ExamList as AdminExams } from "./admin/ExamList";
 import { CreateExam as AdminCreateExam } from "./admin/CreateExam";
 import { ExamDetailView as AdminExamDetail } from "./admin/ExamDetailView";
+import { ExamQuestionsView as AdminExamQuestions } from "./admin/ExamQuestionsView";
+import { ExamQuestionManualAdd as AdminExamQuestionManualAdd } from "./admin/ExamQuestionManualAdd";
 import { ManageSchedules as AdminManageSchedules } from "./admin/ManageSchedules";
 import { EditExam as AdminEditExam } from "./admin/EditExam";
+import { QuestionBanks } from "./admin/QuestionBanks";
+import { Questions } from "./admin/Questions";
+import { ExamSections } from "./admin/ExamSections";
 import { Courses } from "./admin/Courses";
 import { Results } from "./admin/Results";
 import { Attendance } from "./pages/Attendance";
@@ -42,6 +47,8 @@ import { ChangePassword as SuperAdminChangePassword } from "./super-admin/Change
 import { CreateExam as SuperAdminCreateExam } from "./admin/CreateExam";
 import { ExamList as SuperAdminExams } from "./super-admin/ExamList";
 import { ExamDetailView as SuperAdminExamDetail } from "./admin/ExamDetailView";
+import { ExamQuestionsView as SuperAdminExamQuestions } from "./admin/ExamQuestionsView";
+import { ExamQuestionManualAdd as SuperAdminExamQuestionManualAdd } from "./admin/ExamQuestionManualAdd";
 import { ManageSchedules as SuperAdminManageSchedules } from "./admin/ManageSchedules";
 import { EditExam as SuperAdminEditExam } from "./super-admin/EditExam";
 
@@ -54,6 +61,8 @@ import { Schedule as TeacherSchedule } from "./pages/Schedule";
 import { CreateExam as TeacherCreateExam } from "./teacher/CreateExam";
 import { ExamList as TeacherMyExams } from "./teacher/ExamList";
 import { ExamDetailView as TeacherExamDetail } from "./teacher/ExamDetailView";
+import { ExamQuestionsView as TeacherExamQuestions } from "./admin/ExamQuestionsView";
+import { ExamQuestionManualAdd as TeacherExamQuestionManualAdd } from "./admin/ExamQuestionManualAdd";
 import { ManageSchedules as TeacherManageSchedules } from "./teacher/ManageSchedules";
 import { EditExam as TeacherEditExam } from "./teacher/EditExam";
 import { ScheduledTests as TeacherScheduledTests } from "./teacher/ScheduledTests";
@@ -108,8 +117,14 @@ const AdminRoutes = () => (
     <Route path="create-exam" element={<AdminCreateExam />} />
     <Route path="exams" element={<AdminExams />} />
     <Route path="exam/:id" element={<AdminExamDetail />} />
+    <Route path="exam/:id/questions" element={<AdminExamQuestions />} />
+    <Route path="exam/:id/questions/add" element={<AdminExamQuestionManualAdd />} />
     <Route path="exam/:id/edit" element={<AdminEditExam />} />
     <Route path="exam/:id/schedules" element={<AdminManageSchedules />} />
+    <Route path="exam/:id/sections" element={<ExamSections />} />
+    <Route path="question-banks" element={<QuestionBanks />} />
+    <Route path="questions" element={<Questions />} />
+    <Route path="question-bank/:bankId/questions" element={<Questions />} />
     <Route path="courses" element={<Courses />} />
     <Route path="results" element={<Results />} />
     <Route path="attendance" element={<Attendance />} />
@@ -140,8 +155,12 @@ const SuperAdminRoutes = () => (
     <Route path="create-exam" element={<SuperAdminCreateExam />} />
     <Route path="exams" element={<SuperAdminExams />} />
     <Route path="exam/:id" element={<SuperAdminExamDetail />} />
+    <Route path="exam/:id/questions" element={<SuperAdminExamQuestions />} />
+    <Route path="exam/:id/questions/add" element={<SuperAdminExamQuestionManualAdd />} />
     <Route path="exam/:id/edit" element={<SuperAdminEditExam />} />
     <Route path="exam/:id/schedules" element={<SuperAdminManageSchedules />} />
+    <Route path="question-banks" element={<QuestionBanks />} />
+    <Route path="questions" element={<Questions />} />
     <Route path="orders" element={<OrderManagement />} />
     <Route path="change-password" element={<SuperAdminChangePassword />} />
     <Route path="*" element={<Navigate to="/super-admin/users" replace />} />
@@ -159,8 +178,12 @@ const TeacherRoutes = () => (
     <Route path="create-exam" element={<TeacherCreateExam />} />
     <Route path="my-exams" element={<TeacherMyExams />} />
     <Route path="exam/:id" element={<TeacherExamDetail />} />
+    <Route path="exam/:id/questions" element={<TeacherExamQuestions />} />
+    <Route path="exam/:id/questions/add" element={<TeacherExamQuestionManualAdd />} />
     <Route path="exam/:id/edit" element={<TeacherEditExam />} />
     <Route path="exam/:id/schedules" element={<TeacherManageSchedules />} />
+    <Route path="question-banks" element={<QuestionBanks />} />
+    <Route path="questions" element={<Questions />} />
     <Route path="scheduled-tests" element={<TeacherScheduledTests />} />
     <Route path="exam-results" element={<TeacherExamResults />} />
     <Route path="results" element={<TeacherResults />} />
