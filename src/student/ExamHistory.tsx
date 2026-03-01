@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, Award, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, Award, CheckCircle, TrendingUp, XCircle, BarChart3 } from 'lucide-react';
 import { examService } from '../services/exam';
 import { Enrollment, EnrollmentStatus } from '../types/exam';
 import { format, isPast } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { scoringService, Score } from '../services/scoring';
 
 export const ExamHistory = () => {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [scores, setScores] = useState<Score[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -18,7 +20,17 @@ export const ExamHistory = () => {
   const loadHistory = async () => {
     try {
       setLoading(true);
-      const data = await examService.getMyEnrollments();
+      const [data, scoreData] = await Promise.all([
+        examService.getMyEnrollments(),
+        (async () => {
+          try {
+            return await scoringService.getMyScores();
+          } catch (scoreError) {
+            console.warn('Failed to load scores for stats', scoreError);
+            return [];
+          }
+        })(),
+      ]);
       console.log('Raw enrollments data (history):', data);
       
       // Filter only past enrollments with valid schedule and exam data
@@ -45,6 +57,7 @@ export const ExamHistory = () => {
       });
 
       setEnrollments(history);
+      setScores(scoreData || []);
     } catch (error) {
       console.error('Failed to load exam history:', error);
       toast.error(error.message || 'Failed to load exam history');
@@ -75,6 +88,68 @@ export const ExamHistory = () => {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Exam History</h1>
         <p className="text-gray-600">Your past exams and results</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <BarChart3 className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Exams Taken</p>
+              <p className="text-lg font-semibold text-gray-900">
+                {enrollments.filter(e => e.status === EnrollmentStatus.COMPLETED).length}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <TrendingUp className="w-5 h-5 text-green-600" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Avg Score</p>
+              <p className="text-lg font-semibold text-gray-900">
+                {scores.length > 0
+                  ? `${Math.round(
+                      scores.reduce((sum, s) => sum + (s.percentage || 0), 0) /
+                        scores.length
+                    )}%`
+                  : '-'}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <Award className="w-5 h-5 text-purple-600" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Best Score</p>
+              <p className="text-lg font-semibold text-gray-900">
+                {scores.length > 0
+                  ? `${Math.max(...scores.map(s => s.percentage || 0))}%`
+                  : '-'}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-red-100 rounded-lg">
+              <XCircle className="w-5 h-5 text-red-600" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Cancelled</p>
+              <p className="text-lg font-semibold text-gray-900">
+                {enrollments.filter(e => e.status === EnrollmentStatus.CANCELLED).length}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       
       {enrollments.length === 0 ? (

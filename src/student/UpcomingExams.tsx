@@ -74,7 +74,24 @@ export const UpcomingExams = () => {
   };
 
   const handleStartExam = (enrollment: Enrollment) => {
-    navigate(`/student/exam/${enrollment.examId}/start`);
+    const resolvedExamId =
+      enrollment.examId ||
+      enrollment.schedule?.examId ||
+      enrollment.schedule?.exam?.id ||
+      '';
+    const resolvedScheduleId = enrollment.scheduleId || enrollment.schedule?.id || '';
+
+    if (!resolvedExamId || resolvedExamId === 'undefined') {
+      toast.error('Exam not found. Please reload and select an exam.');
+      return;
+    }
+    if (!resolvedScheduleId) {
+      toast.error('Schedule not available. Please try again.');
+      return;
+    }
+    navigate(`/student/exam/${resolvedExamId}/start?scheduleId=${resolvedScheduleId}`, {
+      state: { scheduleId: resolvedScheduleId, scheduleExamId: resolvedExamId },
+    });
   };
 
   if (loading) {

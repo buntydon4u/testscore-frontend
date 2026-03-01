@@ -21,6 +21,24 @@ class ApiClient {
   private static instance: ApiClient;
   private axiosInstance: AxiosInstance;
 
+  private assertEndpoint(endpoint: string) {
+    if (!endpoint || typeof endpoint !== 'string') {
+      throw new Error('API endpoint is missing');
+    }
+    const trimmed = endpoint.trim();
+    if (trimmed === '' || trimmed === '/') {
+      const baseUrl = this.axiosInstance.defaults.baseURL || '';
+      const normalizedBase = typeof baseUrl === 'string' ? baseUrl.trim() : '';
+      if (!normalizedBase || normalizedBase.endsWith('/api') || normalizedBase === '/api') {
+        throw new Error('API endpoint is missing');
+      }
+      return;
+    }
+    if (trimmed.includes('undefined')) {
+      throw new Error(`API endpoint contains undefined: ${trimmed}`);
+    }
+  }
+
   private unwrapResponseData<T>(responseData: any): T {
     if (!responseData || typeof responseData !== 'object') {
       return responseData as T;
@@ -38,9 +56,10 @@ class ApiClient {
     return responseData as T;
   }
 
-  private constructor() {
+  constructor(baseURL?: string) {
+    const resolvedBaseUrl = baseURL || API_BASE_URL;
     this.axiosInstance = axios.create({
-      baseURL: API_BASE_URL,
+      baseURL: resolvedBaseUrl,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -99,6 +118,7 @@ class ApiClient {
 
   async get<T>(endpoint: string): Promise<T> {
     try {
+      this.assertEndpoint(endpoint);
       console.log(`Making GET request to: ${endpoint}`);
       const response = await this.axiosInstance.get(endpoint);
       console.log('Raw response:', response);
@@ -113,21 +133,25 @@ class ApiClient {
   }
 
   async post<T>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
+    this.assertEndpoint(endpoint);
     const response = await this.axiosInstance.post(endpoint, data);
     return this.unwrapResponseData<T>(response.data);
   }
 
   async put<T>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
+    this.assertEndpoint(endpoint);
     const response = await this.axiosInstance.put(endpoint, data);
     return this.unwrapResponseData<T>(response.data);
   }
 
   async patch<T>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
+    this.assertEndpoint(endpoint);
     const response = await this.axiosInstance.patch(endpoint, data);
     return this.unwrapResponseData<T>(response.data);
   }
 
   async delete<T>(endpoint: string): Promise<T> {
+    this.assertEndpoint(endpoint);
     const response = await this.axiosInstance.delete(endpoint);
     return this.unwrapResponseData<T>(response.data);
   }

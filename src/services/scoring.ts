@@ -119,6 +119,10 @@ class ScoringService {
     return this.apiClient.get<Score[]>(url);
   }
 
+  async getMyScores(): Promise<Score[]> {
+    return this.apiClient.get<Score[]>('/me');
+  }
+
   async getExamScores(examId: string, params?: {
     section?: string;
     groupBy?: 'user' | 'section' | 'topic';

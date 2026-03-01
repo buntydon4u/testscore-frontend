@@ -105,8 +105,11 @@ class ExamAttemptService {
     this.apiClient = new ApiClient('/api/exam-attempts');
   }
 
-  async startAttempt(examId: string): Promise<ExamAttempt> {
-    return this.apiClient.post<ExamAttempt>('', { examId });
+  async startAttempt(examId: string, scheduleId?: string): Promise<ExamAttempt> {
+    return this.apiClient.post<ExamAttempt>('', {
+      examId,
+      ...(scheduleId ? { scheduleId } : {}),
+    });
   }
 
   async getAttempt(id: string): Promise<ExamAttempt> {

@@ -93,6 +93,7 @@ import { AvailableExams as StudentAvailableExams } from "./student/AvailableExam
 import { UpcomingExams as StudentUpcomingExams } from "./student/UpcomingExams";
 import { ExamDetail as StudentExamDetail } from "./student/ExamDetail";
 import { ExamHistory as StudentExamHistory } from "./student/ExamHistory";
+import { ExamAttempt as StudentExamAttempt } from "./student/ExamAttempt";
 
 // Parent Components
 import { Dashboard as ParentDashboard } from "./parent/Dashboard";
@@ -220,6 +221,7 @@ const StudentRoutes = () => (
     <Route path="upcoming-exams" element={<StudentUpcomingExams />} />
     <Route path="exam-history" element={<StudentExamHistory />} />
     <Route path="exam/:id" element={<StudentExamDetail />} />
+    <Route path="exam/:id/start" element={<StudentExamAttempt />} />
     <Route path="*" element={<Navigate to="/student/dashboard" replace />} />
   </Routes>
 );
